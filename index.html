@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Hotel Latam — Sistema de reservas de habitaciones con TypeScript Vanilla y Vite" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f6f3ec" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#14110d" />
+    <title>Hotel Latam · Sistema de reservas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="#" aria-label="Hotel Latam — inicio">
+          <span class="brand-mark" aria-hidden="true">A</span>
+          <span class="brand-text">
+            <strong>Hotel Latam</strong>
+            <span>Sistema de reservas</span>
+          </span>
+        </a>
+        <span class="header-pill">Hito 2 · TypeScript Vanilla</span>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="hero">
+        <p class="eyebrow">Bienvenido a Hotel Latam</p>
+        <h1>Reserva tu estadía <em>perfecta</em> en segundos</h1>
+        <p class="hero-sub">Selecciona una habitación, indica tus noches y confirma tu reserva al instante.</p>
+      </section>
+
+      <div class="layout-grid">
+        <section class="panel" aria-labelledby="titulo-reserva">
+          <h2 id="titulo-reserva">Nueva reserva</h2>
+          <form id="form-reserva" novalidate>
+            <div class="field">
+              <label for="txt-huesped">Huésped</label>
+              <input type="text" id="txt-huesped" name="huesped" placeholder="Nombre completo" autocomplete="name" />
+            </div>
+            <div class="field">
+              <label for="sel-habitacion">Habitación</label>
+              <select id="sel-habitacion" name="habitacion">
+                <option value="">Cargando habitaciones…</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="txt-noches">Noches</label>
+              <input type="number" id="txt-noches" name="noches" min="1" step="1" value="1" />
+            </div>
+            <p id="bloque-error" class="form-error" role="alert"></p>
+            <p id="mensaje-exito" class="form-success" role="status"></p>
+            <button type="submit" id="btn-reservar" class="btn btn-primary">Reservar habitación</button>
+          </form>
+        </section>
+
+        <section class="panel" aria-labelledby="titulo-habitaciones">
+          <div class="panel-head">
+            <h2 id="titulo-habitaciones">Nuestras habitaciones</h2>
+          </div>
+          <div id="contenedor-habitaciones" class="rooms-grid"></div>
+        </section>
+      </div>
+
+      <section class="panel catalog" aria-labelledby="titulo-catalogo">
+        <div class="catalog-head">
+          <h2 id="titulo-catalogo">Reservas registradas</h2>
+          <span id="contador-reservas" class="counter-pill"></span>
+        </div>
+        <div id="contenedor-catalogo" class="cards-grid"></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <p>Hotel Latam · Sistema de Reservas — Hito 2 · Desafío Latam</p>
+        <p class="footer-note">API de prueba: json-server · TypeScript estricto, cero <code>any</code>, estados con <code>enum</code>.</p>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

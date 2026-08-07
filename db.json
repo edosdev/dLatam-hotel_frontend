@@ -1,0 +1,89 @@
+{
+  "rooms": [
+    {
+      "id": "1",
+      "roomNumber": "101",
+      "type": "SINGLE",
+      "pricePerNight": 45000,
+      "available": true
+    },
+    {
+      "id": "2",
+      "roomNumber": "102",
+      "type": "SINGLE",
+      "pricePerNight": 45000,
+      "available": true
+    },
+    {
+      "id": "3",
+      "roomNumber": "201",
+      "type": "DOUBLE",
+      "pricePerNight": 72000,
+      "available": true
+    },
+    {
+      "id": "4",
+      "roomNumber": "202",
+      "type": "DOUBLE",
+      "pricePerNight": 72000,
+      "available": false
+    },
+    {
+      "id": "5",
+      "roomNumber": "301",
+      "type": "SUITE",
+      "pricePerNight": 120000,
+      "available": true
+    },
+    {
+      "id": "6",
+      "roomNumber": "302",
+      "type": "SUITE",
+      "pricePerNight": 120000,
+      "available": true
+    }
+  ],
+  "reservations": [
+    {
+      "id": "1",
+      "guestName": "María Fernández",
+      "roomNumber": "202",
+      "nights": 3,
+      "pricePerNight": 72000,
+      "status": "CONFIRMED"
+    },
+    {
+      "id": "2",
+      "guestName": "Juan Pérez",
+      "roomNumber": "101",
+      "nights": 2,
+      "pricePerNight": 45000,
+      "status": "CONFIRMED"
+    },
+    {
+      "id": "3",
+      "guestName": "Ana Torres",
+      "roomNumber": "301",
+      "nights": 1,
+      "pricePerNight": 120000,
+      "status": "CANCELLED"
+    },
+    {
+      "id": "4",
+      "guestName": "Carlos Díaz",
+      "roomNumber": "102",
+      "nights": 4,
+      "pricePerNight": 45000,
+      "status": "CONFIRMED"
+    },
+    {
+      "guestName": "Ed",
+      "roomNumber": "102",
+      "nights": 1,
+      "pricePerNight": 45000,
+      "status": "CANCELLED",
+      "id": "cwXMs4FiOys"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
