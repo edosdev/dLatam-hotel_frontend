@@ -15,11 +15,11 @@ const STATUS_META: Record<ReservationStatus, { label: string; className: string 
 /**
  * Componente modular: genera el HTML de una tarjeta de reserva.
  * El estado visual se deriva exclusivamente del enum ReservationStatus.
+ * El total viene calculado del backend (nights × pricePerNight).
  */
 export function generateReservationCardHtml(reservation: Reservation): string {
   const isCancelled = reservation.status === ReservationStatus.CANCELLED;
   const statusMeta = STATUS_META[reservation.status];
-  const total = reservation.nights * reservation.pricePerNight;
 
   const cancelButton = isCancelled
     ? ""
@@ -49,7 +49,7 @@ export function generateReservationCardHtml(reservation: Reservation): string {
         </div>
         <div class="detail detail-total">
           <dt>Total</dt>
-          <dd>${formatPrice(total)}</dd>
+          <dd>${formatPrice(reservation.total)}</dd>
         </div>
       </dl>
       ${cancelButton}

@@ -1,7 +1,6 @@
 import './style.css'
 
-import type { NewReservation, Reservation } from './models/reservation.ts'
-import { ReservationStatus } from './models/reservation.ts'
+import type { NewReservation } from './models/reservation.ts'
 import type { Room } from './models/room.ts'
 import { generateReservationCardHtml } from './components/ReservationCard.ts'
 import { ROOM_TYPE_LABELS, generateRoomCardHtml } from './components/RoomCard.ts'
@@ -10,7 +9,6 @@ import {
   createReservation,
   fetchReservations,
   fetchRooms,
-  setRoomAvailabilityByNumber,
 } from './services/api.ts'
 import { escapeHtml, formatPrice } from './utils/format.ts'
 
@@ -122,6 +120,7 @@ async function loadRooms(): Promise<void> {
       const option = document.createElement('option')
       option.value = room.roomNumber
       option.textContent = `Nº ${room.roomNumber} · ${ROOM_TYPE_LABELS[room.type]} · ${formatPrice(room.pricePerNight)}`
+      option.disabled = !room.available
       fragment.appendChild(option)
     })
 
@@ -141,26 +140,13 @@ async function loadRooms(): Promise<void> {
   }
 }
 
-/**
- * Sincroniza la disponibilidad de una habitación de forma no crítica:
- * si la actualización falla, se registra en consola pero no se interrumpe
- * el flujo principal (la reserva ya fue creada o cancelada con éxito).
- */
-async function syncRoomAvailability(roomNumber: string, available: boolean): Promise<void> {
-  try {
-    await setRoomAvailabilityByNumber(roomNumber, available)
-  } catch (error) {
-    console.error('No se pudo sincronizar la disponibilidad de la habitación:', error)
-  }
-}
-
 async function handleCancelReservation(reservationId: string, button: HTMLButtonElement): Promise<void> {
   button.disabled = true
   button.textContent = 'Cancelando…'
   try {
-    const cancelledReservation: Reservation = await cancelReservation(reservationId)
+    await cancelReservation(reservationId)
     showFormFeedback('Reserva cancelada correctamente.', false)
-    await syncRoomAvailability(cancelledReservation.roomNumber, true)
+    // El backend libera la habitación automáticamente al cancelar
     await Promise.all([loadReservations(), loadRooms()])
   } catch (error) {
     console.error('Fallo crítico de red al cancelar la reserva:', error)
@@ -210,18 +196,20 @@ function setupReservationForm(): void {
     }
 
     try {
+      // Generar reservationId único (formato compatible con el backend)
+      const reservationId = `RES-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`
+
       const newReservation: NewReservation = {
+        reservationId,
         guestName,
         roomNumber,
         nights,
-        pricePerNight: selectedRoom.pricePerNight,
-        status: ReservationStatus.CONFIRMED,
       }
 
       await createReservation(newReservation)
       showFormFeedback('Reserva creada con éxito.', false)
       bookingForm.reset()
-      await syncRoomAvailability(roomNumber, false)
+      // El backend ocupa la habitación automáticamente al crear la reserva
       await Promise.all([loadReservations(), loadRooms()])
     } catch (error) {
       console.error('Fallo crítico de red al crear la reserva:', error)

@@ -1,13 +1,14 @@
 import type { NewReservation, Reservation } from '../models/reservation.ts'
-import { ReservationStatus } from '../models/reservation.ts'
 import type { Room } from '../models/room.ts'
 
 /**
- * Capa de servicios: consume la API REST mock (json-server) usando async/await,
+ * Capa de servicios: consume la API REST del backend Spring Boot usando async/await,
  * validando response.ok y envolviendo cada llamada en try/catch.
- * Cuando exista un backend real (Hito 3+), solo hay que cambiar esta URL base.
+ *
+ * En desarrollo, Vite proxy redirige /api/* → http://localhost:8080/api/*
+ * (configurado en vite.config.ts). En producción, el backend sirve en el mismo origen.
  */
-const API_BASE_URL = '/api'
+const API_BASE_URL = '/api/v1'
 
 export async function fetchRooms(): Promise<Room[]> {
   try {
@@ -41,23 +42,8 @@ export async function createReservation(newReservation: NewReservation): Promise
       body: JSON.stringify(newReservation),
     })
     if (!response.ok) {
-      throw new Error(`Error del servidor: código HTTP ${response.status}`)
-    }
-    return (await response.json()) as Reservation
-  } catch (error) {
-    throw error
-  }
-}
-
-export async function cancelReservation(reservationId: string): Promise<Reservation> {
-  try {
-    const response = await fetch(`${API_BASE_URL}/reservations/${reservationId}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ status: ReservationStatus.CANCELLED }),
-    })
-    if (!response.ok) {
-      throw new Error(`Error del servidor: código HTTP ${response.status}`)
+      const errorBody = await response.json().catch(() => null)
+      throw new Error(errorBody?.message || `Error del servidor: código HTTP ${response.status}`)
     }
     return (await response.json()) as Reservation
   } catch (error) {
@@ -66,31 +52,19 @@ export async function cancelReservation(reservationId: string): Promise<Reservat
 }
 
 /**
- * Actualiza la disponibilidad de una habitación por su número.
- * Replica el flujo room.markAsOccupied() / room.markAsAvailable() del Hito 1.
+ * Cancela una reserva usando DELETE (el método que expone el backend Spring Boot).
+ * El backend también soporta PATCH /reservations/:id con { "status": "CANCELLED" }.
  */
-export async function setRoomAvailabilityByNumber(roomNumber: string, available: boolean): Promise<void> {
+export async function cancelReservation(reservationId: string): Promise<Reservation> {
   try {
-    // Se buscan todas las habitaciones y se filtra en el cliente: json-server
-    // no filtra de forma confiable por campos string con valores numéricos.
-    const searchResponse = await fetch(`${API_BASE_URL}/rooms`)
-    if (!searchResponse.ok) {
-      throw new Error(`Error del servidor: código HTTP ${searchResponse.status}`)
-    }
-    const rooms = (await searchResponse.json()) as Room[]
-    const room = rooms.find((candidate) => candidate.roomNumber === roomNumber)
-    if (room === undefined) {
-      return
-    }
-
-    const patchResponse = await fetch(`${API_BASE_URL}/rooms/${room.id}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ available }),
+    const response = await fetch(`${API_BASE_URL}/reservations/${reservationId}`, {
+      method: 'DELETE',
     })
-    if (!patchResponse.ok) {
-      throw new Error(`Error del servidor: código HTTP ${patchResponse.status}`)
+    if (!response.ok) {
+      const errorBody = await response.json().catch(() => null)
+      throw new Error(errorBody?.message || `Error del servidor: código HTTP ${response.status}`)
     }
+    return (await response.json()) as Reservation
   } catch (error) {
     throw error
   }
