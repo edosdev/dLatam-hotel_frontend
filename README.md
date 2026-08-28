@@ -22,8 +22,8 @@ enumeraciones estrictas y tipado hermético (cero `any`).
 
 ## 🔗 Repositorios
 
-- **Backend** (Hito 1 + Hito 3/4): [hotel-reservation-api](https://github.com/edosdev/dLatam-hotel_backend)
-- **Frontend** (Hito 2): Este repositorio
+- **Backend (Hito 1 + Hito 3/4)**: [dLatam-hotel_backend](https://github.com/edosdev/dLatam-hotel_backend) — Spring Boot + PostgreSQL + Clean Architecture
+- **Frontend (este repo / Hito 2)**: [dLatam-hito2_Hotel_Front](https://github.com/edosdev/dLatam-hito2_Hotel_Front) — TypeScript Vanilla + Vite
 
 ## 🚀 Instrucciones de Puesta en Marcha Local
 
