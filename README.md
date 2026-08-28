@@ -1,11 +1,11 @@
-# 🏨 Hotel Latam — Sistema de Reservas (Hito 2)
+# 🏨 Hotel Latam — Sistema de Reservas ()
 
 Aplicación web **interactiva** de reservas de hotel construida con **TypeScript Vanilla** y **Vite**.
 Permite visualizar las habitaciones disponibles, registrar nuevas reservas de huéspedes,
 calcular el total por noches y cancelar reservas existentes, todo con feedback visual continuo
 (carga, éxito y error) ante cada llamada a la API.
 
-El dominio replica fielmente el **Hito 1** (sistema de reservas de hotel en Java): habitaciones
+El dominio replica fielmente el **** (sistema de reservas de hotel en Java): habitaciones
 (`Room`, `RoomType`) y reservas (`Reservation`, `ReservationStatus`), controlados con
 enumeraciones estrictas y tipado hermético (cero `any`).
 
@@ -22,8 +22,8 @@ enumeraciones estrictas y tipado hermético (cero `any`).
 
 ## 🔗 Repositorios
 
-- **Backend (Hito 1 + Hito 3/4)**: [dLatam-hotel_backend](https://github.com/edosdev/dLatam-hotel_backend) — Spring Boot + PostgreSQL + Clean Architecture
-- **Frontend (este repo / Hito 2)**: [dLatam-hito2_Hotel_Front](https://github.com/edosdev/dLatam-hito2_Hotel_Front) — TypeScript Vanilla + Vite
+- **Backend**: [dLatam-hotel_backend](https://github.com/edosdev/dLatam-hotel_backend) — Spring Boot + PostgreSQL + Clean Architecture
+- **Frontend**: [dLatam-hito2_Hotel_Front](https://github.com/edosdev/dLatam-hito2_Hotel_Front) — TypeScript Vanilla + Vite
 
 ## 🚀 Instrucciones de Puesta en Marcha Local
 
@@ -47,7 +47,7 @@ mvn spring-boot:run
 ### 3. Ejecutar el Frontend
 
 ```bash
-cd hito2/Hotel/
+cd Hotel/
 npm install
 npm run dev
 ```
